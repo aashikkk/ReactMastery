@@ -4,9 +4,10 @@
 
 - [React Mastery](#react-mastery)
   - [Table of Contents](#table-of-contents)
-  - [PreReq](#pre-requisites)
+  - [Pre Requisites](#pre-requisites)
   - [Installation](#installation)
-  - [Components](#component)
+  - [Components](#components)
+    - [Functional Components](#functional-components)
 
 
 ## Pre Requisites
