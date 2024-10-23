@@ -106,7 +106,7 @@ export default App
 
 #### Named Export vs Default Export
 
-**Named Export
+**Named Export**
 
 * Allows you to export multiple values.
 * You must use the same name to import the value.
@@ -156,5 +156,5 @@ export default App;
 ```
 
 **Key Points**
-Use named exports when you need to export multiple values from a module.
-Use default exports when a module only exports a single value.
+- Use named exports when you need to export multiple values from a module.
+- Use default exports when a module only exports a single value.
