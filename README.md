@@ -566,8 +566,9 @@ class ClassClick extends Component {
 
 ### Event Binding
 
-**M1 - Binding in render method**
-**M2 - Arrow function in render method**
+**M1 - Binding in render method** - performance implications
+
+**M2 - Arrow function in render method** - Still viable optiom=n
 
 ```bash
 class EventBind extends Component {
