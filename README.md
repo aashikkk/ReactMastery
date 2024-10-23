@@ -11,6 +11,8 @@
     - [Named Export vs Default Export](#named-export-vs-default-export)
     - [Class Components](#class-components)
     - [Functional vs Class Components](#functional-vs-class-component)
+    - [JSX](#jsx)
+    - [Propeties aka Props](#props)
 
 ## Pre Requisites
 ![PreReq](src/assets/PreReq.png)
@@ -249,3 +251,62 @@ export default Greet;
 **Key Points**
 - The new JSX transform simplifies the code and reduces the need for boilerplate imports.
 - You can still import React if you need to use other React features like hooks or context.
+
+
+### Props
+- You can call anything you want that parameter, but the convention is props.
+- Props are immutable. READ ONLY.
+
+To pass the unknown content between, simply use ```props.children``` between opening and closing tags.
+
+#### For Functional Component
+
+```bash
+//Greet.jsx
+const Greet = (props) => {
+    return(
+        <>
+            <h1>Hello, {props.name} a.k.a {props.heroName}</h1>
+            {props.children}
+        </>
+    )
+};
+
+export default Greet;
+
+//App.jsx
+import Greet from './components/Greet'
+function App() {
+  return (
+    <>
+      <Greet name="Bruce" heroName="Batman"> This is children</Greet>
+      <Greet name="Clark" heroName="Superman"> <button>Action </button> </Greet>
+      <Greet name="Diana" heroName="Wonder Woman"/>
+  )
+}
+
+export default App
+```
+
+#### For Class Component
+
+```bash
+//Welcome.jsx
+
+import React, {Component} from "react";
+
+class Welcome extends Component{
+    render(){
+        return(
+            <>
+                <h1>Welcome {this.props.name} a.k.a {this.props.heroName}</h1>
+                {this.props.children}
+            </>
+        )
+    }
+}
+
+export default Welcome;
+
+//App.jsx will be kinda same
+```
