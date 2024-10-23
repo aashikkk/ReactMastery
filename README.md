@@ -17,6 +17,7 @@
         -   [Destructuring Prop and State](#destructuring-prop-and-state)
         -   [Event Handling](#event-handling)
         -   [Event Binding](#event-binding)
+        -   [Method as Props](#method-as-props)
 
 ## Pre Requisites
 
@@ -661,4 +662,58 @@ class EventBind extends Component {
         );
     }
 }
+```
+
+### Method as Props
+
+Actual idea is we need render parentComponent in App.jsx and ParentComponent will return ChildComponent, when we click(button) that child
+component, it need to get the alert message from parentComponent.
+
+```bash
+//App.jsx
+   return (
+        <>
+            <ParentComponent />
+
+
+//ParentComponent.jsx
+import ChildComponent from "./ChildComponent";
+
+class ParentComponent extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            parentName: "Parent",
+        };
+
+        this.greetParent = this.greetParent.bind(this);
+    }
+
+    greetParent() {
+        alert(`This is from ${this.state.parentName}`);
+    }
+    render() {
+        return (
+            <div>
+                <ChildComponent greetHandler={this.greetParent} />
+            </div>
+        );
+    }
+}
+
+export default ParentComponent;
+
+//ChildComponent.jsx
+function ChildComponent(props) {
+    return (
+        <div>
+            {/* <button onClick={() => props.greetHandler()}>Greet Parent</button> */}
+            <button onClick={props.greetHandler}>Greet Parent</button>
+        </div>
+    );
+}
+
+export default ChildComponent;
+
 ```
