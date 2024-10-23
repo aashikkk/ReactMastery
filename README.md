@@ -10,7 +10,7 @@
 
 
 ## Pre Requisites
-[PreReq](src/assets/PreReq.png)
+![PreReq](src/assets/PreReq.png)
 
 ## Content
 - Fundamentals
