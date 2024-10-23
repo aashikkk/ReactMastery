@@ -13,6 +13,7 @@
     - [Functional vs Class Components](#functional-vs-class-component)
     - [JSX](#jsx)
     - [Propeties aka Props](#props)
+    - [State](#state)
 
 ## Pre Requisites
 ![PreReq](src/assets/PreReq.png)
@@ -310,3 +311,151 @@ export default Welcome;
 
 //App.jsx will be kinda same
 ```
+### Props Vs State
+![alt text](src/assets/PropsVsState.png)
+
+### State
+
+#### State change in Class Component
+
+```bash
+//Message.jsx
+import React, { Component } from 'react'
+
+export class Message extends Component {
+    constructor(){
+        super(); // bcz we extending Component
+        this.state = {
+            message: 'Welcome Visitor'
+        }
+
+    }
+
+    changeMessage(){
+        this.setState({
+            message: 'Thank you for subscribing'
+        })
+        
+    }
+  render() {
+    return (
+      <div>
+       <h1>{this.state.message}</h1> 
+        <button onClick={()=> this.changeMessage()}>Subscribe</button>
+      </div>
+      
+    )
+  }
+}
+
+export default Message
+```
+
+Note: rconst - for constructor 
+
+#### SetState
+- setState is used to update the state in a class component.
+- The component re-renders when the state changes.
+- Never modify the state directly instead use setState to modify
+
+```bash
+//Counter.jsx
+import React, { Component } from 'react'
+
+class Counter extends Component {
+    constructor(props) {
+      super(props)
+    
+      this.state = {
+         count: 0
+      }
+    }
+
+   increment() {
+        // this.setState({
+        //     count: this.state.count + 1
+        // }, ()=> {console.log('Callback value', this.state.count)})
+        // console.log(this.state.count);
+
+        // Using block body with return
+        this.setState((prevState) => {
+            return { count: prevState.count + 1 };
+        });
+
+        // Using implicit return
+        this.setState((prevState) => ({
+            count: prevState.count + 1
+        }));
+            
+    }
+
+    incrementFive(){
+        this.increment()
+        this.increment()
+        this.increment()
+        this.increment()
+        this.increment()
+    }
+  render() {
+    return (
+      <div>
+        <h1>Counter: {this.state.count}</h1>
+        <button onClick={()=> this.incrementFive()}>Increment</button>
+        </div>
+    )
+  }
+}
+
+export default Counter
+
+```
+
+
+```bash
+increment() {
+        this.setState({
+            count: this.state.count + 1
+        }, ()=> {console.log('Callback value', this.state.count)})  //1
+        console.log(this.state.count); //0
+        
+    }
+```
+
+Calls to setState are asynchoronous. ```console.log(this.state.count)``` being called before the state is actually set.
+So inorder to call the function after the setState, can use 2nd parameter of the setState as callback function.
+
+```setState(stateObject, callback)```
+
+![alt text](src/assets/setState.png)
+
+
+Note: 
+
+```bash
+this.setState((prevState)=> { return {count: prevState.count + 1} })
+
+this.setState((prevState)=> ({ count: prevState.count + 1 }))
+
+```
+
+Both of these setState calls are functionally equivalent in terms of updating the state. They both use the functional form of setState to ensure that the state update is based on the previous state. The difference lies in the syntax used to return the new state object.
+
+**Using a Block Body with return**
+```bash
+this.setState((prevState) => {
+  return { count: prevState.count + 1 };
+});
+```
+
+**Syntax:** Uses a block body with an explicit return statement.
+**Use Case:** Useful when you need to perform additional logic before returning the new state.
+
+
+**Using an Implicit Return**
+```bash
+this.setState((prevState) => ({
+  count: prevState.count + 1
+}));
+```
+**Syntax:** Uses an implicit return with parentheses.
+**Use Case:** More concise and preferred when the new state object is directly derived from the previous state without additional logic.
