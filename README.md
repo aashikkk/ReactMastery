@@ -10,7 +10,7 @@
     - [Functional Components](#functional-components)
     - [Named Export vs Default Export](#named-export-vs-default-export)
     - [Class Components](#class-components)
-    - [Functional vs Class Components](#functional-vs-component)
+    - [Functional vs Class Components](#functional-vs-class-component)
 
 ## Pre Requisites
 ![PreReq](src/assets/PreReq.png)
