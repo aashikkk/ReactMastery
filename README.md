@@ -185,3 +185,67 @@ export default Welcome;
 
 #### Functional vs Class Component
 ![alt text](src/assets/funcVsComp.png)
+
+But after React 16.7, we can use state in functional components by introducing Hooks.
+
+#### Hooks (Will get back later)
+- No breaking changes
+- Completely opt-in & 100% backwards-compatible
+- Component Types - Functional Component and Class components
+- Using state, lifecycle methods and 'this' binding.
+- After understanding state, event binding and lifecycle hooks in class components
+
+
+### JSX 
+![alt text](src/assets/jsx.png)
+
+```bash
+//Hello.js
+import React from "react";
+
+const Hello = () => {
+    // return(
+    //     <div>
+    //         <h1>Hello, Aashik</h1>
+    //     </div>
+    // )
+    return React.createElement('div', {id: 'hello', className: 'dummyClass'}, React.createElement('h1', null, 'Hello Aashik'));
+}
+
+export default Hello;
+
+```
+
+![alt text](src/assets/jsxDifference.png)
+
+### Update Note on Import React
+Q: Why we don't need to import React anymore?
+A: 
+
+In React 17 and later, you no longer need to import React to use JSX. This is because the new JSX transform introduced in React 17 automatically imports the necessary functions from the React library behind the scenes.
+
+Explanation
+**Before React 17:** You had to import React because JSX was transformed into React.createElement calls.
+**React 17 and Later**: The new JSX transform doesn't require React to be in scope, so you don't need to import it explicitly.
+
+Example
+**Before React 17**
+```bash
+import React from 'react';
+
+const Greet = () => <h1>Hello World</h1>;
+
+export default Greet;
+
+```
+
+**React 17 and Later**
+```bash
+const Greet = () => <h1>Hello World</h1>;
+
+export default Greet;
+```
+
+**Key Points**
+- The new JSX transform simplifies the code and reduces the need for boilerplate imports.
+- You can still import React if you need to use other React features like hooks or context.
