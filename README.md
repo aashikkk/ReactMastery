@@ -936,3 +936,38 @@ Keys are a crucial part of React's reconciliation process. They help React ident
 ![alt text](src/assets/listWOkey.png)
 
 ![alt text](src/assets/listWkey.png)
+
+### Index as Key Anti-pattern
+
+Use index as the 2nd parameter of the arrow function.
+
+```bash
+function NameList() {
+    const names = ["Bruce", "Clark", "Diana"];
+    nameList = names.map((name, index) => <h2 key={index}> {index} {name}</h2>);
+
+    return <div>{nameList}</div>;
+}
+
+export default NameList;
+
+```
+
+**Disaster in this certain scenarios**
+
+When adding item in the beginning in the list.
+![alt text](src/assets/indexasAntiKey.png)
+
+and also the problem when trying to sort the list
+![SortByLatestIssue](src/assets/SortByLatestIssue.png)
+
+##### When to use index as a key
+
+1. The items in your list do not have a unique id
+2. The list is a static list and will not change
+3. The list will never be reordered or filtered
+
+**If not** try these methods
+
+-   Generate a uniqueID using uuid
+-   Hashing out the unique id from one of the existing properties
