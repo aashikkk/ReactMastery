@@ -9,6 +9,7 @@
   - [Components](#components)
     - [Functional Components](#functional-components)
     - [Named Export vs Default Export](#named-export-vs-default-export)
+    - [Class Components](#class-components)
 
 
 ## Pre Requisites
@@ -160,7 +161,7 @@ export default App;
 - Use default exports when a module only exports a single value.
 
 
-### Class Component
+### Class Components
 Class components are ES6 classes that extend from React.Component and can have their **own state** and lifecycle methods.
 
 ![alt text](src/assets/classComp.png)
