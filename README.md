@@ -904,8 +904,8 @@ function NameList() {
             skill: "Vue",
         },
     ];
-    const personList = persons.map((person, id) => (
-        <Person person={person} key={id} />
+    const personList = persons.map((person) => (
+        <Person person={person} key={person.id} />
     ));
     return <div>{personList}</div>;
 }
@@ -921,3 +921,18 @@ function Person({ person, id }) {
 }
 
 ```
+
+### Keys and List
+
+Keys are a crucial part of React's reconciliation process. They help React identify which items have changed, are added, or are removed. This improves the performance of rendering lists by allowing React to re-render only the changed elements
+
+-   Keys in React are used to identify elements in a list.
+-   They help React optimize the rendering process by identifying which items have changed, are added, or are removed.
+-   Help in efficient update of the user interface
+-   Keys should be unique among siblings and consistent across renders.
+-   Using array indices as keys is not recommended if the list can change.
+-   Cannot pass prop as key, if we need to pass, need to pass as different name.
+
+![alt text](src/assets/listWOkey.png)
+
+![alt text](src/assets/listWkey.png)
