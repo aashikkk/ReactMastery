@@ -15,9 +15,11 @@
         -   [Propeties aka Props](#props)
         -   [State](#state)
         -   [Destructuring Prop and State](#destructuring-prop-and-state)
-        -   [Event Handling](#event-handling)
-        -   [Event Binding](#event-binding)
-        -   [Method as Props](#method-as-props)
+    -   [Event Handling](#event-handling)
+    -   [Event Binding](#event-binding)
+    -   [Method as Props](#method-as-props)
+    -   [Conditional Rendering](#conditional-rendering)
+    -   [List Rendering](#list-rendering)
 
 ## Pre Requisites
 
@@ -715,5 +717,207 @@ function ChildComponent(props) {
 }
 
 export default ChildComponent;
+
+```
+
+### Conditional Rendering
+
+1. if/else
+2. Element variables
+3. Ternary conditional operator
+4. Short circuit operator
+
+#### Using if/else - Not recommended
+
+```bash
+class UserGreeting extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            isLoggedIn: false,
+        };
+    }
+    render() {
+        if (this.state.isLoggedIn) {
+            return <div>Welcome Aashik</div>;
+        } else {
+            return <div>Welcome Guest</div>;
+        }
+    }
+}
+```
+
+#### Using element variables
+
+```bash
+class UserGreeting extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            isLoggedIn: false,
+        };
+    }
+    render() {
+        let message;
+        if (this.state.isLoggedIn) {
+            message = "Welcome Aashik";
+        } else {
+            message = "Welcome Guest";
+        }
+        return <div>{message}</div>;
+    }
+}
+
+```
+
+#### Ternary - Follow most of the time
+
+```bash
+class UserGreeting extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            isLoggedIn: false,
+        };
+    }
+    render() {
+        return this.state.isLoggedIn ? (
+            <div>Welcome Aashik</div>
+        ) : (
+            <div>Welcome Guest</div>
+        );
+    }
+}
+
+```
+
+#### Short circuit - 2nd best option
+
+Based on loggedIn status, either render `Welcome, Aashik` or nothing.
+
+```bash
+class UserGreeting extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            isLoggedIn: true,
+        };
+    }
+    render() {
+        return this.state.isLoggedIn && <div>Welcome Aashik</div>;
+    }
+}
+
+
+```
+
+### List Rendering
+
+```bash
+function NameList() {
+    const names = ["Bruce", "Clark", "Diana"];
+    return (
+        <div>
+            {names.map((name, id) => <h2 key={id}>{name}</h2>)}
+        </div>
+    );
+}
+
+```
+
+if we simplify more,
+
+```bash
+function NameList() {
+    const names = ["Bruce", "Clark", "Diana"];
+    const nameList = names.map((name, id) => <h2 key={id}>{name}</h2>);
+    return <div>{nameList}</div>;
+}
+
+```
+
+#### For Objects
+
+```bash
+//NameList.jsx
+
+function NameList() {
+    const persons = [
+        {
+            id: 1,
+            name: "Bruce",
+            age: 27,
+            skill: "React",
+        },
+        {
+            id: 2,
+            name: "Clark",
+            age: 26,
+            skill: "Angular",
+        },
+        {
+            id: 3,
+            name: "Diana",
+            age: 22,
+            skill: "Vue",
+        },
+    ];
+    const personList = persons.map((person, id) => (
+        <h2 key={id}>
+            I'm {person.name}. I'm {person.age} years old. I know {person.skill}
+        </h2>
+    ));
+    return <div>{personList}</div>;
+}
+
+export default NameList;
+
+```
+
+Refactor more,
+
+```bash
+//NameList.jsx
+
+function NameList() {
+    const persons = [
+        {
+            id: 1,
+            name: "Bruce",
+            age: 27,
+            skill: "React",
+        },
+        {
+            id: 2,
+            name: "Clark",
+            age: 26,
+            skill: "Angular",
+        },
+        {
+            id: 3,
+            name: "Diana",
+            age: 22,
+            skill: "Vue",
+        },
+    ];
+    const personList = persons.map((person, id) => (
+        <Person person={person} key={id} />
+    ));
+    return <div>{personList}</div>;
+}
+
+
+//Person.jsx
+function Person({ person, id }) {
+    return (
+        <h2 key={id}>
+            I'm {person.name}. I'm {person.age} years old. I know {person.skill}
+        </h2>
+    );
+}
 
 ```
