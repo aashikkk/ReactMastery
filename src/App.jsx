@@ -1,12 +1,13 @@
 import './App.css'
+import Greet from './components/Greet'
 
 function App() {
-
   return (
     <>
-      <h1>Vite + React</h1>
+      <Greet/>
     </>
   )
 }
 
 export default App
+
