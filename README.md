@@ -447,8 +447,8 @@ this.setState((prevState) => {
 });
 ```
 
-**Syntax:** Uses a block body with an explicit return statement.
-**Use Case:** Useful when you need to perform additional logic before returning the new state.
+- **Syntax:** Uses a block body with an explicit return statement.
+- **Use Case:** Useful when you need to perform additional logic before returning the new state.
 
 
 **Using an Implicit Return**
@@ -457,5 +457,52 @@ this.setState((prevState) => ({
   count: prevState.count + 1
 }));
 ```
-**Syntax:** Uses an implicit return with parentheses.
-**Use Case:** More concise and preferred when the new state object is directly derived from the previous state without additional logic.
+- **Syntax:** Uses an implicit return with parentheses.
+- **Use Case:** More concise and preferred when the new state object is directly derived from the previous state without additional logic.
+
+### Destructuring Prop and State
+
+#### 1. Destructuring Parameters - Function Comp
+
+```bash
+const Greet = ({name, heroName, children}) => {
+    console.log(props);
+    return(
+        <>
+            <h1>Hello, {name} a.k.a {heroName}</h1>
+            {children}
+        </>
+    ) 
+};
+
+```
+
+#### 2. Destructuring in the function body - Function Comp
+
+```bash
+const Greet = (props) => {
+    const { name, heroName } = props;
+    return(
+        <>
+            <h1>Hello, {name} a.k.a {heroName}</h1>
+        </>
+    ) 
+};
+
+```
+
+#### Destructuring in the function body - Class Comp
+
+```bash
+class Welcome extends Component{
+    render(){
+        const {name, heroName} = this.props;
+        //const {state1, state2} = this.state;
+        return(
+            <>
+                <h1>Welcome {name} a.k.a {heroName}</h1>
+            </>
+        )
+    }
+}
+```
