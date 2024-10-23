@@ -158,3 +158,29 @@ export default App;
 **Key Points**
 - Use named exports when you need to export multiple values from a module.
 - Use default exports when a module only exports a single value.
+
+
+### Class Component
+Class components are ES6 classes that extend from React.Component and can have their **own state** and lifecycle methods.
+
+![alt text](src/assets/classComp.png)
+
+```bash
+//Welcome.jsx
+import React, {Component} from "react";
+
+class Welcome extends Component {
+    render(){
+        return(
+            <h1>Class Component</h1>
+        )
+    }
+}
+
+export default Welcome;
+
+```
+
+
+#### Functional vs Class Component
+![alt text](src/assets/funcVsComp.png)
