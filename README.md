@@ -71,7 +71,7 @@ Functional components are a simpler way to write components that only contain a 
 - They can use hooks to manage state and side effects.
 
 JS Function optionally receive the properties and returns JSX (HTML)
-![Functional Components](src/assets/funcComp.png.png)
+![Functional Components](src/assets/funcComp.png)
 
 
 ```bash
