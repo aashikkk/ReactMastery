@@ -971,3 +971,126 @@ and also the problem when trying to sort the list
 
 -   Generate a uniqueID using uuid
 -   Hashing out the unique id from one of the existing properties
+
+### Styling and CSS Basics
+
+1. CSS Stylesheets
+2. Inline styling
+3. CSS Modules
+4. CSS in JS Libraries (Styled components) - For projects
+
+#### CSS Stylesheets
+
+CSS stylesheets can be used in any child component. However, it might lead to some conflicts due to the global nature of CSS. To avoid conflicts, consider using CSS Modules or styled-components.
+
+**Key Points**
+
+-   **Global Scope:** CSS styles are global by default, which can lead to conflicts if multiple components use the same class names.
+-   **CSS Modules:** Consider using CSS Modules to scope CSS locally to the component.
+-   **Styled-Components:** Another alternative is to use styled-components for scoped styling.
+
+```css
+.primary {
+    color: orange;
+}
+
+.font-xl {
+    font-size: 72px;
+}
+```
+
+```jsx
+function Stylesheet(props) {
+    let className = props.primary ? "primary" : "";
+    return (
+        <div>
+            <h1 className={`${className} font-xl`}>Stylesheet</h1>
+        </div>
+    );
+}
+```
+
+#### Inline styling
+
+```bash
+function Inline() {
+    const heading = {
+        fontSize: "72px",
+        color: "blue",
+    };
+
+    return (
+        <div>
+            <h1 style={heading}>Inline</h1>
+        </div>
+    );
+}
+```
+
+#### CSS Modules
+
+Available with react-scripts: 2.0 or higher
+
+Naming convention: **name.module.css**
+Import convention: `import styles from "path/to/styles"`
+
+Using CSS Modules or styled-components helps to avoid conflicts and keeps styles scoped to the component.
+
+#### CSS in JS Libraries
+
+CSS-in-JS libraries, such as styled-components, allow you to write CSS directly within your JavaScript code. This approach provides several benefits, including scoped styles, dynamic styling, and easier maintenance.
+
+##### Benefits of Styled Components
+
+1. **Scoped Styles**: Styles are scoped to the component, preventing conflicts with other components.
+2. **Dynamic Styling**: You can use JavaScript to dynamically change styles based on props or state.
+3. **Maintainability**: Styles are colocated with the component, making it easier to maintain and understand the code.
+4. **Theming**: Styled-components support theming, allowing you to define a consistent look and feel across your application.
+
+##### Example of Using Styled Components
+
+1. **Install Styled Components**
+    ```bash
+    npm install styled-components
+    ```
+
+```jsx
+// Button.jsx
+import React from "react";
+import styled from "styled-components";
+
+const StyledButton = styled.button`
+    background-color: ${(props) => (props.primary ? "blue" : "gray")};
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: ${(props) =>
+            props.primary ? "darkblue" : "darkgray"};
+    }
+`;
+
+function Button({ primary, children }) {
+    return <StyledButton primary={primary}>{children}</StyledButton>;
+}
+
+export default Button;
+
+// App.jsx
+import React from 'react';
+import Button from './Button';
+
+function App() {
+  return (
+    <div>
+      <Button primary>Primary Button</Button>
+      <Button>Secondary Button</Button>
+    </div>
+  );
+}
+
+export default App;
+```
