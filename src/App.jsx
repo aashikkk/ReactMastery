@@ -15,12 +15,16 @@ import Welcome from "./components/Welcome";
 import Inline from "./components/Inline";
 import "./appStyles.css";
 import styles from "./appStyles.module.css";
+import FavouriteColor from "./components/useState/FavouriteColor";
+import Car from "./components/useState/Car";
 
 function App() {
     return (
         <>
-            <h1 className="error">Error</h1>
-            <h1 className={styles.success}>Success</h1>
+            <Car />
+            {/* <FavouriteColor /> */}
+            {/* <h1 className="error">Error</h1>
+            <h1 className={styles.success}>Success</h1> */}
             {/* <Inline /> */}
             {/* <Stylesheet primary={true} /> */}
             {/* <NameList /> */}
