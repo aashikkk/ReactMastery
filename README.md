@@ -20,6 +20,9 @@
     -   [Method as Props](#method-as-props)
     -   [Conditional Rendering](#conditional-rendering)
     -   [List Rendering](#list-rendering)
+    -   [Styling and CSS Basics](#styling-and-css-basics)
+    -   [Basics of Form Handling](#form-handling) // TODO
+    -   [Life Cycle Methods](#life-cycle-methods)
 
 ## Pre Requisites
 
@@ -1094,3 +1097,125 @@ function App() {
 
 export default App;
 ```
+
+### Form Handling
+
+### Life Cycle Methods
+
+React components have several lifecycle methods that you can override to run code at specific times in the process of a component's life. These methods are divided into three main phases: Mounting, Updating, and Unmounting.
+
+#### Mounting
+
+These methods are called when an instance of a component is being created and inserted into the DOM.
+
+1. **constructor(props)**
+
+    - Called before the component is mounted.
+    - Used for initializing state and binding event handlers.
+
+2. **static getDerivedStateFromProps(props, state)**
+
+    - Called right before rendering the element(s) in the DOM.
+    - Used to update the state based on props.
+
+3. **render()**
+
+    - The only required method in a class component.
+    - Returns the JSX to be rendered.
+
+4. **componentDidMount()**
+    - Called after the component is mounted.
+    - Used for side effects like fetching data from an API.
+
+#### Updating
+
+These methods are called when a component is being re-rendered as a result of changes to props or state.
+
+1. **static getDerivedStateFromProps(props, state)**
+
+    - Called right before rendering the element(s) in the DOM.
+    - Used to update the state based on props.
+
+2. **shouldComponentUpdate(nextProps, nextState)**
+
+    - Called before rendering when new props or state are received.
+    - Used to optimize performance by preventing unnecessary re-renders.
+
+3. **render()**
+
+    - Returns the JSX to be rendered.
+
+4. **getSnapshotBeforeUpdate(prevProps, prevState)**
+
+    - Called right before the DOM is updated.
+    - Used to capture some information from the DOM before it changes.
+
+5. **componentDidUpdate(prevProps, prevState, snapshot)**
+    - Called after the component is updated.
+    - Used for side effects like fetching data based on updated props.
+
+#### Unmounting
+
+This method is called when a component is being removed from the DOM.
+
+1. **componentWillUnmount()**
+    - Called right before the component is unmounted and destroyed.
+    - Used for cleanup like cancelling network requests or removing event listeners.
+
+### Example of Lifecycle Methods
+
+```javascript
+import React, { Component } from "react";
+
+class LifeCycleDemo extends Component {
+    constructor(props) {
+        super(props);
+        this.state = { data: null };
+        console.log("Constructor");
+    }
+
+    static getDerivedStateFromProps(props, state) {
+        console.log("getDerivedStateFromProps");
+        return null;
+    }
+
+    componentDidMount() {
+        console.log("componentDidMount");
+        // Simulate a data fetch
+        setTimeout(() => {
+            this.setState({ data: "Fetched Data" });
+        }, 1000);
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        console.log("shouldComponentUpdate");
+        return true;
+    }
+
+    getSnapshotBeforeUpdate(prevProps, prevState) {
+        console.log("getSnapshotBeforeUpdate");
+        return null;
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        console.log("componentDidUpdate");
+    }
+
+    componentWillUnmount() {
+        console.log("componentWillUnmount");
+    }
+
+    render() {
+        console.log("Render");
+        return <div>{this.state.data ? this.state.data : "Loading..."}</div>;
+    }
+}
+
+export default LifeCycleDemo;
+```
+
+**Key Points**
+
+-   **Mounting:** Methods called when a component is created and inserted into the DOM.
+-   **Updating:** Methods called when a component is re-rendered due to changes in props or state.
+-   **Unmounting:** Method called when a component is removed from the DOM.
