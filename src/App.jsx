@@ -17,11 +17,27 @@ import "./appStyles.css";
 import styles from "./appStyles.module.css";
 import FavouriteColor from "./components/useState/FavouriteColor";
 import Car from "./components/useState/Car";
+import Timer from "./components/useEffect/Timer";
+import CounterUE from "./components/useEffect/Counter";
+import Component1 from "./components/useContext/Component1";
+import Ref from "./components/useRef/Ref";
+import AccessDOMFocus from "./components/useRef/AccessDOMFocus";
+import TrackingStateChange from "./components/useRef/TrackingStateChange";
+import Counter1 from "./components/useReducer/Counter1";
+import Counter2 from "./components/useReducer/Counter2";
 
 function App() {
     return (
         <>
-            <Car />
+            <Counter2 />
+            {/* <Counter1 /> */}
+            {/* <TrackingStateChange /> */}
+            {/* <AccessDOMFocus /> */}
+            {/* <Ref /> */}
+            {/* <Component1 /> */}
+            {/* <CounterUE /> */}
+            {/* <Timer /> */}
+            {/* <Car /> */}
             {/* <FavouriteColor /> */}
             {/* <h1 className="error">Error</h1>
             <h1 className={styles.success}>Success</h1> */}
