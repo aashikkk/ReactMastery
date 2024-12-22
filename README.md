@@ -29,6 +29,7 @@
         -   [useContext](#usecontext)
         -   [useRef](#useRef)
         -   [useReducer](#useReducer)
+    -   [TypeScript + React](#typescript-and-react)
 
 ## Pre Requisites
 
@@ -2066,3 +2067,324 @@ function Counter2() {
     );
 }
 ```
+
+### useMemo
+
+UseMemo and useCallback are used for performance purpose
+
+The React useMemo Hook returns a memoized value.
+
+When to use:
+Rerender everytime unnecessarily.
+Use when dealing with extensive calculations like dealing with millions of numbers.
+
+Think of memoization as caching a value so that it does not need to be recalculated.
+
+The useMemo Hook only runs when one of its dependencies update.
+
+This can improve performance.
+
+The useMemo and useCallback Hooks are similar. The main difference is that useMemo returns a memoized value and useCallback returns a memoized function. You can learn more about useCallback in the useCallback chapter.
+
+Ex:
+
+```js
+const expensiveCalculation = (num) => {
+    console.log("Calculating...");
+    for (let i = 0; i < 1000000000; i++) {
+        num += 1;
+    }
+    return num;
+};
+```
+
+![Pure function](src/assets/pureFuncUseMem.png)
+
+```js
+Can use for Pure function.
+     function sqrt(n){
+        return n * n;
+    }
+
+Side effects should not be there.
+    let x = 2;
+    function sqrt(n){
+        return x * n;
+    }
+        Not valid
+```
+
+![With Side effect](src/assets/funcWithSideEffect.png)
+
+```js
+import React, { useMemo, useState } from "react";
+
+const CounterUseMemo = () => {
+    const [count, setCount] = useState(0);
+    const [arr, setArr] = useState([1, 2, 3, 5, 8]);
+
+    function showMax() {
+        // it should not rerender until the any changes came in
+        console.log("Changing max");
+        return Math.max(...arr);
+    }
+
+    const memVal = useMemo(() => showMax(), [arr]);
+    return (
+        <div>
+            <button onClick={() => setCount(count + 1)}>Add Count</button>
+            <button
+                onClick={() =>
+                    setArr([...arr, Math.round(count * Math.random())])
+                }
+            >
+                Add to Array
+            </button>
+            <p>{JSON.stringify(arr)}</p>
+            <p>{memVal}</p>
+            <p>{count}</p>
+        </div>
+    );
+};
+
+export default CounterUseMemo;
+```
+
+### useCallback
+
+The React useCallback Hook returns a memoized callback function.
+
+This allows us to isolate resource intensive functions so that they will not automatically run on every render.
+
+The useCallback Hook only runs when one of its dependencies update.
+
+This can improve performance.
+
+The useCallback and useMemo Hooks are similar. The main difference is that useMemo returns a memoized value and useCallback returns a memoized function. You can learn more about useMemo in the useMemo chapter.
+
+```js
+// Product.jsx
+
+import React, { memo } from "react";
+
+const Product = ({ name, addToCart }) => {
+    console.log(`${name} comp re rendered`);
+
+    return (
+        <div className="border-">
+            <h1>{name}</h1>
+            <button onClick={addToCart}>Add to cart</button>
+        </div>
+    );
+};
+
+export default memo(Product);
+
+// Used memo when name changes it will re render
+
+// Main.jsx
+import React, { useCallback, useState } from "react";
+import Product from "./Product";
+
+const MainuseCallb = () => {
+    const [prod, setProd] = useState(["prod 1", "prod 2"]);
+    const [count, setCount] = useState(0);
+    const [cart, setCart] = useState(0);
+
+    const addToCart = useCallback(() => {
+        setCart(cart + 1);
+    }, [cart]);
+    return (
+        <div>
+            <h3>Count: {count} </h3>
+            <h3>Cart: {cart} </h3>
+            <button onClick={() => setCount(count + 1)}>+ Count</button>
+            <div>
+                {prod.map((prod, i) => {
+                    return (
+                        <Product name={prod} addToCart={addToCart} key={i} />
+                    );
+                })}
+            </div>
+        </div>
+    );
+};
+
+export default MainuseCallb;
+
+// used useCallback within addToCart function if the cart amount changes it will only render addToCart
+```
+
+In this code, you have a Product component that uses memo. This means it won't re-render unless its props (like name or addToCart) change.
+
+The addToCart function is wrapped with useCallback, which means it won't change unless the cart value changes. This is important because if addToCart changes, Product would re-render. By using useCallback, you ensure that addToCart stays the same unless it really needs to change, which helps memo do its job effectively.
+
+So, together, memo and useCallback help your app run smoother by avoiding unnecessary re-renders.
+
+## High Order Components (HOC)
+
+**What is a Higher-Order Component (HOC) in React?**
+
+A Higher-Order Component (HOC) is an advanced React pattern for reusing component logic. It is a function that takes a component as input and returns a new component with additional functionality.
+
+This allows you to abstract common logic that needs to be shared between multiple components, keeping your code DRY (Don’t Repeat Yourself).
+
+**Why Use HOCs?**
+HOCs are used to:
+
+Reuse logic: Extract shared behaviors into a single place.
+
+Add additional functionality: Enhance a component by injecting extra props or logic.
+
+Separate concerns: Keep components focused on their own logic and delegate extra functionality to HOCs.
+
+**How Does a HOC Work?**
+Definition:
+
+```js
+function withExtraFeature(WrappedComponent) {
+    return function EnhancedComponent(props) {
+        // Add extra functionality here
+        return <WrappedComponent {...props} />;
+    };
+}
+```
+
+withExtraFeature: The HOC function.
+WrappedComponent: The component being enhanced.
+EnhancedComponent: The new component with additional features.
+
+**Simple Example of a HOC**
+Let’s create a HOC that provides a timestamp to a wrapped component.
+
+**The Wrapped Component**
+
+```js
+function ShowTimestamp({ timestamp }) {
+    return <p>Current Timestamp: {timestamp}</p>;
+}
+```
+
+**The HOC**
+
+```js
+function withTimestamp(WrappedComponent) {
+    return function EnhancedComponent(props) {
+        const timestamp = new Date().toISOString(); // Generate timestamp
+        return <WrappedComponent {...props} timestamp={timestamp} />;
+    };
+}
+```
+
+**Using the HOC**
+
+const EnhancedComponent = withTimestamp(ShowTimestamp);
+
+```js
+function App() {
+    return <EnhancedComponent />;
+}
+```
+
+Here, withTimestamp injects the timestamp prop into ShowTimestamp.
+
+**Use Cases for HOCs**
+Authentication: Restrict access to certain components unless the user is logged in.
+
+```js
+function withAuth(WrappedComponent) {
+    return function EnhancedComponent(props) {
+        const isLoggedIn = !!localStorage.getItem("authToken");
+        return isLoggedIn ? (
+            <WrappedComponent {...props} />
+        ) : (
+            <p>Access Denied</p>
+        );
+    };
+}
+```
+
+Loading Spinners: Show a loading spinner while data is being fetched.
+
+```js
+function withLoading(WrappedComponent) {
+    return function EnhancedComponent({ isLoading, ...props }) {
+        if (isLoading) return <p>Loading...</p>;
+        return <WrappedComponent {...props} />;
+    };
+}
+```
+
+Logging: Log the props passed to a component for debugging.
+
+```js
+function withLogger(WrappedComponent) {
+    return function EnhancedComponent(props) {
+        console.log("Props:", props);
+        return <WrappedComponent {...props} />;
+    };
+}
+```
+
+**HOCs in Real-World Applications**
+React Redux’s connect Function
+The connect function from react-redux is a popular example of a HOC. It connects a React component to the Redux store, allowing the component to access the state or dispatch actions.
+
+Example:
+
+import { connect } from "react-redux";
+
+```js
+function MyComponent({ data }) {
+    return <div>Data from Redux: {data}</div>;
+}
+
+const mapStateToProps = (state) => ({
+    data: state.someData,
+});
+
+export default connect(mapStateToProps)(MyComponent);
+```
+
+Here, connect(mapStateToProps) is a HOC that wraps MyComponent and injects data as a prop.
+
+**Advantages of HOCs**
+Code Reusability: Shared logic is abstracted into a single HOC, reducing redundancy.
+
+Separation of Concerns: Components focus on rendering, while HOCs handle additional functionality.
+
+Easy to Test: Since HOCs are pure functions, they’re easier to test independently.
+
+**Drawbacks of HOCs**
+Wrapper Hell: Nesting multiple HOCs can result in deeply wrapped components, making debugging difficult.
+
+```js
+ default withAuth(withLogger(withLoading(MyComponent)));
+```
+
+Prop Collision: If both the HOC and the wrapped component define the same prop, it can cause unexpected behavior.
+
+Performance Overhead: Every HOC adds a new layer, which might affect performance for deeply wrapped components.
+
+Not Ideal with Hooks: With the introduction of React Hooks, some patterns previously solved by HOCs can now be solved with hooks (e.g., useAuth, useLogger, etc.).
+
+**When to Use HOCs vs Hooks**
+**Feature HOCs Hooks**
+Reusability Logic shared via wrapped components. Logic shared via custom hooks.
+
+Performance Adds an extra layer to the component tree. Lightweight and avoids wrapper hell.
+
+Stateful Logic Good for injecting additional props or logic. Better for managing and sharing state.
+
+Modern React Introduced before hooks. Still valid but often replaced by hooks. Recommended for new React applications.
+
+**Key Takeaways**
+HOCs allow you to reuse logic by wrapping a component and returning an enhanced version of it.
+
+They are useful for tasks like authentication, logging, loading spinners, or connecting to Redux.
+
+However, with the rise of React Hooks, many use cases for HOCs are now replaced with custom hooks for a simpler and cleaner implementation.
+
+## TypeScript and React
+
+![Why Typescript + React](src/assets/TS+React.png)

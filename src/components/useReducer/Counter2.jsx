@@ -1,9 +1,10 @@
-import React, { useReducer } from "react";
+import React, { useReducer, Fragment } from "react";
 
 const initialState = {
     firstCounter: 0,
     secondCounter: 10,
 };
+
 const reducer = (state, action) => {
     switch (action.type) {
         case "increment":
@@ -36,7 +37,7 @@ const reducer = (state, action) => {
 function Counter2() {
     const [count, dispatch] = useReducer(reducer, initialState);
     return (
-        <div>
+        <Fragment>
             <h2>First Count: {count.firstCounter}</h2>
             <h2>Second Count: {count.secondCounter}</h2>
             <button onClick={() => dispatch({ type: "increment", value: 1 })}>
@@ -64,7 +65,7 @@ function Counter2() {
                 </button>
             </div>
             <button onClick={() => dispatch({ type: "reset" })}>Reset</button>
-        </div>
+        </Fragment>
     );
 }
 

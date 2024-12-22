@@ -25,11 +25,17 @@ import AccessDOMFocus from "./components/useRef/AccessDOMFocus";
 import TrackingStateChange from "./components/useRef/TrackingStateChange";
 import Counter1 from "./components/useReducer/Counter1";
 import Counter2 from "./components/useReducer/Counter2";
+import CounterUseMemo from "./components/useMemo/CounterUseMemo";
+import MainuseCallb from "./components/useCallback/MainuseCallb";
+import HoCMain from "./components/HOC/HoCMain";
 
 function App() {
     return (
         <>
-            <Counter2 />
+            <HoCMain />
+            {/* <MainuseCallb /> */}
+            {/* <CounterUseMemo /> */}
+            {/* <Counter2 /> */}
             {/* <Counter1 /> */}
             {/* <TrackingStateChange /> */}
             {/* <AccessDOMFocus /> */}
