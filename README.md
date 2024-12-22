@@ -29,6 +29,10 @@
         -   [useContext](#usecontext)
         -   [useRef](#useRef)
         -   [useReducer](#useReducer)
+        -   [useMemo](#useMemo)
+        -   [useCallback](#useCallback)
+    -   [High Order Components](#high-order-components)
+    -   [Lazy Loading in react](#Lazy-Loading-in-react)
     -   [TypeScript + React](#typescript-and-react)
 
 ## Pre Requisites
@@ -2221,7 +2225,9 @@ The addToCart function is wrapped with useCallback, which means it won't change 
 
 So, together, memo and useCallback help your app run smoother by avoiding unnecessary re-renders.
 
-## High Order Components (HOC)
+## High Order Components
+
+short as HoC
 
 **What is a Higher-Order Component (HOC) in React?**
 
@@ -2230,6 +2236,7 @@ A Higher-Order Component (HOC) is an advanced React pattern for reusing componen
 This allows you to abstract common logic that needs to be shared between multiple components, keeping your code DRY (Don’t Repeat Yourself).
 
 **Why Use HOCs?**
+
 HOCs are used to:
 
 Reuse logic: Extract shared behaviors into a single place.
@@ -2239,6 +2246,7 @@ Add additional functionality: Enhance a component by injecting extra props or lo
 Separate concerns: Keep components focused on their own logic and delegate extra functionality to HOCs.
 
 **How Does a HOC Work?**
+
 Definition:
 
 ```js
@@ -2255,6 +2263,7 @@ WrappedComponent: The component being enhanced.
 EnhancedComponent: The new component with additional features.
 
 **Simple Example of a HOC**
+
 Let’s create a HOC that provides a timestamp to a wrapped component.
 
 **The Wrapped Component**
@@ -2289,6 +2298,7 @@ function App() {
 Here, withTimestamp injects the timestamp prop into ShowTimestamp.
 
 **Use Cases for HOCs**
+
 Authentication: Restrict access to certain components unless the user is logged in.
 
 ```js
@@ -2327,6 +2337,7 @@ function withLogger(WrappedComponent) {
 ```
 
 **HOCs in Real-World Applications**
+
 React Redux’s connect Function
 The connect function from react-redux is a popular example of a HOC. It connects a React component to the Redux store, allowing the component to access the state or dispatch actions.
 
@@ -2349,6 +2360,7 @@ export default connect(mapStateToProps)(MyComponent);
 Here, connect(mapStateToProps) is a HOC that wraps MyComponent and injects data as a prop.
 
 **Advantages of HOCs**
+
 Code Reusability: Shared logic is abstracted into a single HOC, reducing redundancy.
 
 Separation of Concerns: Components focus on rendering, while HOCs handle additional functionality.
@@ -2356,6 +2368,7 @@ Separation of Concerns: Components focus on rendering, while HOCs handle additio
 Easy to Test: Since HOCs are pure functions, they’re easier to test independently.
 
 **Drawbacks of HOCs**
+
 Wrapper Hell: Nesting multiple HOCs can result in deeply wrapped components, making debugging difficult.
 
 ```js
@@ -2369,7 +2382,9 @@ Performance Overhead: Every HOC adds a new layer, which might affect performance
 Not Ideal with Hooks: With the introduction of React Hooks, some patterns previously solved by HOCs can now be solved with hooks (e.g., useAuth, useLogger, etc.).
 
 **When to Use HOCs vs Hooks**
+
 **Feature HOCs Hooks**
+
 Reusability Logic shared via wrapped components. Logic shared via custom hooks.
 
 Performance Adds an extra layer to the component tree. Lightweight and avoids wrapper hell.
@@ -2379,11 +2394,167 @@ Stateful Logic Good for injecting additional props or logic. Better for managing
 Modern React Introduced before hooks. Still valid but often replaced by hooks. Recommended for new React applications.
 
 **Key Takeaways**
+
 HOCs allow you to reuse logic by wrapping a component and returning an enhanced version of it.
 
 They are useful for tasks like authentication, logging, loading spinners, or connecting to Redux.
 
 However, with the rise of React Hooks, many use cases for HOCs are now replaced with custom hooks for a simpler and cleaner implementation.
+
+### Lazy Loading in react
+
+Lazy loading is a technique to improve performance by loading components or resources only when they are needed. It prevents the entire application from being loaded upfront, reducing the
+initial load time.
+
+How It Works in a Real Project
+
+Imagine you have a dashboard application with multiple pages (e.g., Home, Profile, Settings). Instead of loading all pages when the app starts, lazy loading ensures only the currently viewed page is loaded. Other pages are fetched only when navigated to.
+
+```js
+import React, { Suspense } from "react";
+
+// Lazy load components
+const Home = React.lazy(() => import("./Home"));
+const Profile = React.lazy(() => import("./Profile"));
+
+function App() {
+    return (
+        <div>
+            <h1>My App</h1>
+            <Suspense fallback={<div>Loading...</div>}>
+                {/* The fallback will show while the lazy-loaded component is loading */}
+                <Home />
+                <Profile />
+            </Suspense>
+        </div>
+    );
+}
+
+export default App;
+```
+
+## Portals
+
+**What Are Portals?**
+
+Imagine you’re in a big LEGO house 🏠. You’re building a small LEGO car 🚗, but instead of putting the car inside the house, you want to display it outside the house without breaking the house apart.
+
+A Portal is like a magical door that lets you move the car (or content) to a different spot outside the house while still controlling it from inside the house.
+
+In React, Portals let you render parts of your app (like a modal, popup, or tooltip) outside the main DOM structure but still keep them connected to your React app.
+
+**Why Do We Need Portals?**
+
+Sometimes, you want to display something that shouldn’t be "stuck" inside the rest of your app's structure. For example:
+
+Modals: Popups that overlay everything else.
+
+Tooltips: Small descriptions that float outside their parent.
+
+Dropdown Menus: They need to appear above everything else, not inside a specific box.
+
+If you put these things inside the app’s regular DOM, they might get hidden by other parts (like overflow: hidden or CSS issues).
+
+**How Do Portals Work?**
+
+Normally, React components render inside a specific parent DOM node. With Portals, you can render them in a completely different place in the DOM, like directly into the <body> tag.
+
+Creating a Portal in React
+First, decide where the portal content should go. For example:
+
+```html
+<div id="root"></div>
+<div id="portal-root"></div>
+```
+
+root: Where your React app renders.
+
+portal-root: Where you want your Portal to render content.
+
+Then, use ReactDOM.createPortal to render something into the portal-root.
+
+**Code Example: Modal with Portals**
+
+```js
+import React from "react";
+import ReactDOM from "react-dom";
+
+function Modal({ isOpen, onClose, children }) {
+    if (!isOpen) return null;
+
+    return ReactDOM.createPortal(
+        <div style={modalStyle}>
+            <div style={modalContentStyle}>
+                <button onClick={onClose}>Close</button>
+                {children}
+            </div>
+        </div>,
+        document.getElementById("portal-root") // Render into the portal-root
+    );
+}
+
+const modalStyle = {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+};
+
+const modalContentStyle = {
+    backgroundColor: "white",
+    padding: "20px",
+    borderRadius: "8px",
+};
+
+function App() {
+    const [isModalOpen, setModalOpen] = React.useState(false);
+
+    return (
+        <div>
+            <h1>Hello, Portals!</h1>
+            <button onClick={() => setModalOpen(true)}>Open Modal</button>
+            <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
+                <h2>This is a modal!</h2>
+                <p>Portals are amazing!</p>
+            </Modal>
+        </div>
+    );
+}
+
+export default App;
+```
+
+**How It Works**
+
+ReactDOM.createPortal:
+
+The modal content (background and message) is rendered inside the <div id="portal-root">, not inside your main app's root div.
+
+Still Controlled by React:
+
+Even though the modal is rendered outside the regular DOM tree, React still manages the state (isModalOpen) and events (onClose).
+
+What’s Cool About Portals?
+
+Avoid CSS Issues: Portals bypass problems like overflow: hidden or z-index conflicts.
+
+Flexible Placement: You can render content anywhere in the DOM while keeping it React-controlled.
+
+When to Use Portals
+
+Modals/Popups: Things that need to overlay the entire app.
+
+Tooltips: Floating labels outside parent components.
+
+Dropdowns: Menus that need to break out of parent containers.
+
+Fun Summary
+Portals are like teleporters in a video game 🎮. They let you "move" a component to a different location in the DOM without losing its connection to the app. Magical, right? 🪄✨
 
 ## TypeScript and React
 
