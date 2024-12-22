@@ -33,6 +33,8 @@
         -   [useCallback](#useCallback)
     -   [High Order Components](#high-order-components)
     -   [Lazy Loading in react](#Lazy-Loading-in-react)
+    -   [Render Props](#Render-Props)
+    -   [Ways to Pass Data from Child to Parent in React](#Ways-to-Pass-Data-from-Child-to-Parent-in-React)
     -   [TypeScript + React](#typescript-and-react)
 
 ## Pre Requisites
