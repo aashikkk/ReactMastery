@@ -2556,6 +2556,159 @@ Dropdowns: Menus that need to break out of parent containers.
 Fun Summary
 Portals are like teleporters in a video game 🎮. They let you "move" a component to a different location in the DOM without losing its connection to the app. Magical, right? 🪄✨
 
+## Render Props
+
+A render prop is a pattern in React where a function is passed as a prop to a component. This function allows the parent component to dictate how a child component should render.
+
+**Use Case: Sharing Logic Between Components**
+
+Render props are typically used to share logic between components without duplicating it.
+
+Example: Counter with Render Props
+
+```js
+import React, { useState } from "react";
+
+// Counter Component with Render Props
+const Counter = ({ render }) => {
+    const [count, setCount] = useState(0);
+
+    const increment = () => setCount(count + 1);
+    const decrement = () => setCount(count - 1);
+
+    return render(count, increment, decrement); // Passing count and functions to parent via render prop
+};
+
+// App Component
+const App = () => {
+    return (
+        <div>
+            <h1>Render Props Example</h1>
+            <Counter
+                render={(count, increment, decrement) => (
+                    <div>
+                        <p>Count: {count}</p>
+                        <button onClick={increment}>Increment</button>
+                        <button onClick={decrement}>Decrement</button>
+                    </div>
+                )}
+            />
+        </div>
+    );
+};
+
+export default App;
+```
+
+Explanation:
+
+The Counter component manages the count state.
+
+The render prop is passed from the App component, which defines how to display the count and buttons.
+
+This pattern allows you to reuse the logic (count, increment, decrement) but customize the rendering in different components.
+
+## Ways to Pass Data from Child to Parent in React
+
+In React, data flows unidirectionally (from parent to child). However, there are methods to allow a child to communicate with its parent.
+
+1. Using Callback Functions
+   The parent passes a function as a prop to the child. The child calls the function and sends data as arguments.
+
+Example: Sending Data Up Using a Callback
+
+```js
+import React, { useState } from "react";
+
+// Child Component
+const Child = ({ sendDataToParent }) => {
+    const handleClick = () => {
+        sendDataToParent("Data from Child");
+    };
+
+    return (
+        <div>
+            <button onClick={handleClick}>Send Data to Parent</button>
+        </div>
+    );
+};
+
+// Parent Component
+const Parent = () => {
+    const [data, setData] = useState("");
+
+    const handleChildData = (childData) => {
+        setData(childData);
+    };
+
+    return (
+        <div>
+            <h1>Data from Child: {data}</h1>
+            <Child sendDataToParent={handleChildData} />
+        </div>
+    );
+};
+
+export default Parent;
+```
+
+Explanation:
+
+The parent passes handleChildData to the Child component via the sendDataToParent prop.
+
+The child calls sendDataToParent("Data from Child") to send data to the parent.
+
+The parent updates its state with the data received. 2. Using Refs
+
+Refs can be used for direct access to a child component's state or methods.
+
+Example: Sending Data Using useRef
+
+```js
+import React, { useState, useRef } from "react";
+
+// Child Component
+const Child = React.forwardRef((props, ref) => {
+    const childData = "Data from Child";
+
+    React.useImperativeHandle(ref, () => ({
+        getChildData: () => childData,
+    }));
+
+    return <div>Child Component</div>;
+});
+
+// Parent Component
+const Parent = () => {
+    const childRef = useRef();
+
+    const handleGetData = () => {
+        alert(childRef.current.getChildData());
+    };
+
+    return (
+        <div>
+            <Child ref={childRef} />
+            <button onClick={handleGetData}>Get Data from Child</button>
+        </div>
+    );
+};
+
+export default Parent;
+```
+
+Explanation:
+
+The Child component uses React.forwardRef to expose a method (getChildData) to the parent.
+
+The parent calls childRef.current.getChildData() to access the child's data.
+
+When to Use Each?
+
+Callback Functions: Best for passing data frequently or dynamically during user interaction (e.g., button clicks, form submissions).
+
+Refs: Best for accessing static data or specific methods in a child component.
+
 ## TypeScript and React
 
 ![Why Typescript + React](src/assets/TS+React.png)
