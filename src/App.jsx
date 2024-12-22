@@ -29,6 +29,7 @@ import CounterUseMemo from "./components/useMemo/CounterUseMemo";
 import MainuseCallb from "./components/useCallback/MainuseCallb";
 import HoCMain from "./components/HOC/HoCMain";
 import { lazy, Suspense } from "react";
+import RenderProps from "./components/RenderProps";
 const LazyMainUseCallBack = lazy(() =>
     import("./components/useCallback/MainuseCallb")
 );
@@ -36,7 +37,8 @@ const LazyMainUseCallBack = lazy(() =>
 function App() {
     return (
         <>
-            <HoCMain />
+            <RenderProps />
+            {/* <HoCMain /> */}
             <Suspense fallback={<div>Loading...</div>}>
                 <LazyMainUseCallBack />
             </Suspense>
